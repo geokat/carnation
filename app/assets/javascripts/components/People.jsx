@@ -3,20 +3,7 @@ var People = React.createClass({
   getInitialState: function() {
     return {
       values: this.props.data,
-      errors: {
-        first:  'has-none',
-        last:   'has-none',
-        email:  'has-none',
-        age:    'has-none',
-        gender: 'has-none',
-      }
     };
-  },
-
-  handleNext: function() {
-    if (!this.state.edit) {
-      this.props.nextStep();
-    }
   },
 
   handleUpdate: function(person) {
@@ -63,7 +50,7 @@ var People = React.createClass({
         <NavigationButtons disableBack={false}
                            disableNext={false}
                            handleBack={this.props.prevStep}
-                           handleNext={() => {}} />
+                           handleNext={this.props.nextStep} />
       </div>
     );
   },

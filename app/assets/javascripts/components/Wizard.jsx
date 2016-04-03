@@ -14,7 +14,7 @@ var Wizard = React.createClass({
 
   getInitialState: function() {
     return {
-      step: 1
+      step: 3
     };
   },
 
@@ -39,6 +39,10 @@ var Wizard = React.createClass({
         return <People data={_data.people}
                        nextStep={this.nextStep}
                        prevStep={this.prevStep} />;
+      case 3:
+        return <Vehicles data={_data.vehicles}
+                         nextStep={this.nextStep}
+                         prevStep={this.prevStep} />;
     };
   },
 
