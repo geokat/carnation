@@ -39,7 +39,11 @@ var Wizard = React.createClass({
       case 1:
         return <HouseholdForm data={_data.household}
                               nextStep={this.nextStep}
-                              prevStep={this.prevStep} />
+                              prevStep={this.prevStep} />;
+      case 2:
+        return <PeopleForm data={_data.people}
+                           nextStep={this.nextStep}
+                           prevStep={this.prevStep} />;
     };
   },
 
