@@ -4,6 +4,7 @@ var Vehicle = React.createClass({
     return {
       values: this.props.vehicle,
       edit:   this.isBlank(),
+      ddVal:  this.props.vehicle.person,
       errors: {
         make:    'has-none',
         model:   'has-none',
@@ -45,16 +46,28 @@ var Vehicle = React.createClass({
         this.state.errors[ref] = 'has-none';
       }
     }
+    // Validate the dropdown.
+    if (!this.state.ddVal) {
+      this.state.errors.person = 'has-error';
+      errorsPresent = true;
+    } else {
+      this.state.errors.person = 'has-none';
+    }
+
     if (errorsPresent) {
       this.forceUpdate();
       return;
     }
 
-    // Save input values and refresh.
+    // Save input values.
     for (var ref in this.refs) {
       var val = ReactDOM.findDOMNode(this.refs[ref]).value;
       this.state.values[ref] = val;
     }
+    // Save the dropdown value.
+    this.state.values.person = this.state.ddVal;
+
+    // Refresh.
     this.state.edit = false;
     this.props.handleUpdate(this.state.values);
   },
@@ -66,7 +79,7 @@ var Vehicle = React.createClass({
         <td>{this.state.values.model}</td>
         <td>{this.state.values.year}</td>
         <td>{this.state.values.license}</td>
-        <td>{this.state.values.person}</td>
+        <td>{this.personLabel()}</td>
         <td>
           <a className="btn btn-default" onClick={() => this.setState({edit: true})}>
             Edit
@@ -79,9 +92,22 @@ var Vehicle = React.createClass({
     );
   },
 
+  personLabel: function() {
+    var person = this.state.ddVal;
+
+    return person ? person.first + ' ' + person.last : 'Select';
+  },
+
+  handlePersonSelect: function(e, person) {
+    e.preventDefault();
+    this.state.ddVal = person;
+    this.forceUpdate();
+  },
+
   vehicleForm: function() {
     var cancelStyle = this.isBlank()?
                       {visibility: 'hidden'} : {visibility: 'visible'};
+    var ddClass = 'dropdown ' + this.state.errors.person;
     return (
       <tr>
         <td className={this.state.errors.make}>
@@ -108,11 +134,30 @@ var Vehicle = React.createClass({
                  defaultValue={this.state.values.license}
                  ref="license" />
         </td>
-        <td className={this.state.errors.person}>
-          <input className="form-control"
-                 type="text"
-                 defaultValue={this.state.values.person}
-                 ref="person" />
+        <td>
+          <div className={ddClass}>
+            <button className="btn btn-default dropdown-toggle form-control"
+                    type="button"
+                    id="personDropdown"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="true">
+              {this.personLabel()}
+              <span> </span>
+              <span className="caret"></span>
+            </button>
+            <ul className="dropdown-menu" aria-labelledby="personDropdown">
+              {this.props.people.map((v, k) => {
+                 return (
+                   <li key={k}>
+                     <a href="#" onClick={(e) => this.handlePersonSelect(e, v)}>
+                       {v.first + ' ' + v.last}
+                     </a>
+                   </li>
+                 );
+               })}
+            </ul>
+          </div>
         </td>
         <td>
           <a className="btn btn-default" onClick={this.handleSave}>
@@ -129,6 +174,7 @@ var Vehicle = React.createClass({
   },
 
   render: function() {
+    console.dir(this.state.values);
     if (this.state.edit)
       return this.vehicleForm();
     else

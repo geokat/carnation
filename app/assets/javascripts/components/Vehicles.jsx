@@ -23,7 +23,7 @@ var Vehicles = React.createClass({
   render: function() {
     return (
       <div>
-        <h2>Please provide info about the vehicles in your household</h2>
+        <h2>Household info: vehicles</h2>
         <table className="table table-bordered">
           <thead>
             <tr>
@@ -31,7 +31,7 @@ var Vehicles = React.createClass({
               <th className="col-md-2">Model</th>
               <th className="col-md-1">Year</th>
               <th className="col-md-1">License plate</th>
-              <th className="col-md-2">Owner</th>
+              <th className="col-md-1">Owner</th>
               <th className="col-md-2">Actions</th>
             </tr>
           </thead>
@@ -39,11 +39,13 @@ var Vehicles = React.createClass({
             {this.state.values.map((v, k) => {
                return <Vehicle vehicle={v}
                                key={k}
+                               people={this.props.people}
                                handleUpdate={this.handleUpdate}
                                handleDelete={this.handleDelete} />
             })}
             <Vehicle vehicle={{}}
                      key={this.state.values.length}
+                     people={this.props.people}
                      handleUpdate={this.handleUpdate} />
           </tbody>
         </table>

@@ -141,7 +141,7 @@ var Household = React.createClass({
   render: function() {
     return (
       <div>
-        <h2>Please enter your household info</h2>
+        <h2>Household info</h2>
         <table className="table table-bordered">
           <thead>
             <tr>
