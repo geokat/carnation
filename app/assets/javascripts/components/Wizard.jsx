@@ -6,8 +6,8 @@ var _data = {
     state:   null,
     nob:     null,
   },
-  people: null,
-  vehicles: null
+  people: [],
+  vehicles: []
 };
 
 var Wizard = React.createClass({
@@ -30,25 +30,20 @@ var Wizard = React.createClass({
     });
   },
 
-  submitWizard: function() {
-    this.nextStep();
-  },
-
   renderStep: function() {
     switch(this.state.step) {
       case 1:
-        return <HouseholdForm data={_data.household}
-                              nextStep={this.nextStep}
-                              prevStep={this.prevStep} />;
+        return <Household data={_data.household}
+                          nextStep={this.nextStep} />;
       case 2:
-        return <PeopleForm data={_data.people}
-                           nextStep={this.nextStep}
-                           prevStep={this.prevStep} />;
+        return <People data={_data.people}
+                       nextStep={this.nextStep}
+                       prevStep={this.prevStep} />;
     };
   },
 
   render: function() {
-    var pbarLabel = Math.round((this.state.step - 1) / 3 * 100) + '%';
+    var pbarLabel = Math.round((this.state.step - 1) / 5 * 100) + '%';
     var pbarStyle = {
       width: pbarLabel
     };
@@ -58,9 +53,6 @@ var Wizard = React.createClass({
         <div className="progress">
           <div className="progress-bar"
                role="progressbar"
-               aria-valuenow={this.state.step}
-               aria-valuemin={1}
-               aria-valuemax={3}
                style={pbarStyle}>
             <span className="sr-only">{pbarLabel} complete</span>
           </div>

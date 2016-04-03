@@ -1,9 +1,8 @@
-var HouseholdForm = React.createClass({
+var Household = React.createClass({
 
   getInitialState: function() {
     return {
-      edit: true,
-      completed: false,
+      edit: this.isBlank(),
       values: this.props.data,
       errors: {
         address: 'has-none',
@@ -15,7 +14,20 @@ var HouseholdForm = React.createClass({
     };
   },
 
-  handleCancel: function() {
+  isBlank: function() {
+    return this.props.data.address === null;
+  },
+
+  handleNext: function(e) {
+    e.preventDefault();
+
+    if (!this.state.edit)
+      this.props.nextStep();
+  },
+
+  handleCancel: function(e) {
+    e.preventDefault();
+
     // There may be flagged errors from the previous
     // edit and save try.
     for (var field in this.state.errors) {
@@ -24,7 +36,9 @@ var HouseholdForm = React.createClass({
     this.setState({edit: false})
   },
 
-  handleNext: function() {
+  handleNext: function(e) {
+    e.preventDefault();
+
     if (!this.state.edit) {
       this.props.nextStep();
     }
@@ -49,20 +63,18 @@ var HouseholdForm = React.createClass({
     }
 
     // Save input values and refresh.
-    var values = {};
     for (var ref in this.refs) {
       var val = ReactDOM.findDOMNode(this.refs[ref]).value;
       this.state.values[ref] = val;
     }
     this.setState ({
       edit: false,
-      completed: true
     });
   },
 
   householdForm: function() {
-    var cancelStyle = this.state.completed ?
-                      {visibility: 'visible'} : {visibility: 'hidden'};
+    var cancelStyle = this.isBlank()?
+                      {visibility: 'hidden'} : {visibility: 'visible'};
     return (
       <tr>
         <td className={this.state.errors.address}>
