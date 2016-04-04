@@ -39,6 +39,8 @@ ActiveRecord::Schema.define(version: 20160402145623) do
 
   add_index "people", ["household_id"], name: "index_people_on_household_id", using: :btree
 
+  add_foreign_key "people", "households"
+
   create_table "vehicles", force: :cascade do |t|
     t.integer  "person_id"
     t.string   "make"

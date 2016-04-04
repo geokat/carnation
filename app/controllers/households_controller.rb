@@ -1,6 +1,6 @@
 class HouseholdsController < ApplicationController
 
- def create
+  def create
     @household = Household.new(household_params)
 
     if @household.save
@@ -8,18 +8,18 @@ class HouseholdsController < ApplicationController
     else
       render json: @household.errors, status: :unprocessable_entity
     end
- end
+  end
 
 
- private
+  private
 
- def household_params
-   v_attr = [:make, :model, :year, :license]
-   p_attr = [:first, :last, :email, :age, :is_male, vehicles_attributes: v_attr]
+  def household_params
+    v_attr = [:make, :model, :year, :license]
+    p_attr = [:first, :last, :email, :age, :is_male, vehicles_attributes: v_attr]
 
-   params
-     .require(:household)
-     .permit(:address, :zip, :city, :state, :nob, people_attributes: p_attr)
- end
+    params
+      .require(:household)
+      .permit(:address, :zip, :city, :state, :nob, people_attributes: p_attr)
+  end
 
 end
