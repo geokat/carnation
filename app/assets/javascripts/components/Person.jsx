@@ -4,7 +4,7 @@ var Person = React.createClass({
     return {
       values: this.props.person,
       edit:   this.isBlank(),
-      ddVal:  null,
+      ddVal:  this.props.person.gender,
       errors: {
         first:  'has-none',
         last:   'has-none',
@@ -46,16 +46,28 @@ var Person = React.createClass({
         this.state.errors[ref] = 'has-none';
       }
     }
+    // Validate the dropdown.
+    if (this.state.ddVal === undefined) {
+      this.state.errors.gender = 'has-error';
+      errorsPresent = true;
+    } else {
+      this.state.errors.gender = 'has-none';
+    }
+
     if (errorsPresent) {
       this.forceUpdate();
       return;
     }
 
-    // Save input values and refresh.
+    // Save input values.
     for (var ref in this.refs) {
       var val = ReactDOM.findDOMNode(this.refs[ref]).value;
       this.state.values[ref] = val;
     }
+    // Save the dropdown value.
+    this.state.values.gender = this.state.ddVal;
+
+    // Refresh.
     this.state.edit = false;
     this.props.handleUpdate(this.state.values);
   },
@@ -83,7 +95,7 @@ var Person = React.createClass({
   genderLabel: function() {
     var isMale = this.state.ddVal;
 
-    if (isMale !== null) {
+    if (isMale !== undefined) {
       return isMale ? 'Male' : 'Female';
     }
 
@@ -99,7 +111,7 @@ var Person = React.createClass({
   personForm: function() {
     var cancelStyle = this.isBlank()?
                       {visibility: 'hidden'} : {visibility: 'visible'};
-    var ddClass = 'dropdown' + this.state.errors.gender;
+    var ddClass = 'dropdown ' + this.state.errors.gender;
     return (
       <tr>
         <td className={this.state.errors.first}>

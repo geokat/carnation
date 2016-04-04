@@ -124,7 +124,7 @@ var Vehicle = React.createClass({
         </td>
         <td className={this.state.errors.year}>
           <input className="form-control"
-                 type="text"
+                 type="number"
                  defaultValue={this.state.values.year}
                  ref="year" />
         </td>
@@ -174,7 +174,6 @@ var Vehicle = React.createClass({
   },
 
   render: function() {
-    console.dir(this.state.values);
     if (this.state.edit)
       return this.vehicleForm();
     else
