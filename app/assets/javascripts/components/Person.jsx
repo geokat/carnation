@@ -55,7 +55,7 @@ var Person = React.createClass({
     }
 
     if (errorsPresent) {
-      this.forceUpdate();
+      this.props.flash('Please complete the marked fields before saving');
       return;
     }
 

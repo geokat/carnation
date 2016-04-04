@@ -3,7 +3,24 @@ var People = React.createClass({
   getInitialState: function() {
     return {
       values: this.props.data,
+      flash: null,
     };
+  },
+
+  flash: function(msg) {
+    this.setState({flash: msg});
+  },
+
+  renderFlash: function() {
+    if (!this.state.flash)
+      return null;
+
+    var msg = this.state.flash;
+
+    // Show flash only once.
+    this.state.flash = null;
+
+    return <Flash message={msg} />;
   },
 
   handleUpdate: function(person) {
@@ -23,6 +40,7 @@ var People = React.createClass({
   render: function() {
     return (
       <div>
+        {this.renderFlash()}
         <h2>Household info: people</h2>
         <table className="table table-bordered">
           <thead>
@@ -40,11 +58,13 @@ var People = React.createClass({
                return <Person person={v}
                               key={k}
                               handleUpdate={this.handleUpdate}
-                              handleDelete={this.handleDelete} />
+                              handleDelete={this.handleDelete}
+                              flash={this.flash} />
             })}
             <Person person={{}}
                     key={this.state.values.length}
-                    handleUpdate={this.handleUpdate} />
+                    handleUpdate={this.handleUpdate}
+                    flash={this.flash} />
           </tbody>
         </table>
         <NavigationButtons disableBack={false}

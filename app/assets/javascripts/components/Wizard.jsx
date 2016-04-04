@@ -6,7 +6,23 @@ var _data = {
     state:   null,
     nob:     null,
   },
-  people: [],
+  // FIXME!!!
+  people:   [
+    {
+      first:  'Andrew',
+      last:   'Mason',
+      email:  'andrew@asdf.com',
+      age:    '23',
+      gender: true,
+    },
+    {
+      first:  'Jane',
+      last:   'Doe',
+      email:  'jane@asdf.com',
+      age:    '18',
+      gender: false,
+    },
+  ],
   vehicles: []
 };
 
@@ -14,7 +30,7 @@ var Wizard = React.createClass({
 
   getInitialState: function() {
     return {
-      step: 2
+      step: 3,
     };
   },
 
@@ -31,24 +47,6 @@ var Wizard = React.createClass({
   },
 
   renderStep: function() {
-    // FIXME!!!
-    peoplePlug = [
-      {
-        first:  'Andrew',
-        last:   'Mason',
-        email:  'andrew@asdf.com',
-        age:    '23',
-        gender: 'm',
-      },
-      {
-        first:  'Michael',
-        last:   'Mason',
-        email:  'mike@asdf.com',
-        age:    '18',
-        gender: 'm',
-      },
-    ];
-
     switch(this.state.step) {
       case 1:
         return <Household data={_data.household}
@@ -59,7 +57,7 @@ var Wizard = React.createClass({
                        prevStep={this.prevStep} />;
       case 3:
         return <Vehicles data={_data.vehicles}
-                         people={peoplePlug}
+                         people={_data.people}
                          nextStep={this.nextStep}
                          prevStep={this.prevStep} />;
     };
@@ -85,3 +83,4 @@ var Wizard = React.createClass({
     );
   },
 });
+

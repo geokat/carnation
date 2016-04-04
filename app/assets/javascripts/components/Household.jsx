@@ -10,8 +10,25 @@ var Household = React.createClass({
         state:   'has-none',
         zip:     'has-none',
         nob:     'has-none',
-      }
+      },
+      flash: null,
     };
+  },
+
+  flash: function(msg) {
+    this.setState({flash: msg});
+  },
+
+  renderFlash: function() {
+    if (!this.state.flash)
+      return null;
+
+    var msg = this.state.flash;
+
+    // Show flash only once.
+    this.state.flash = null;
+
+    return <Flash message={msg} />;
   },
 
   isBlank: function() {
@@ -58,7 +75,7 @@ var Household = React.createClass({
       }
     }
     if (errorsPresent) {
-      this.forceUpdate();
+      this.flash('Please complete the marked fields before saving');
       return;
     }
 
@@ -141,6 +158,7 @@ var Household = React.createClass({
   render: function() {
     return (
       <div>
+        {this.renderFlash()}
         <h2>Household info</h2>
         <table className="table table-bordered">
           <thead>

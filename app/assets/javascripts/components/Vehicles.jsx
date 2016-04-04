@@ -3,7 +3,24 @@ var Vehicles = React.createClass({
   getInitialState: function() {
     return {
       values: this.props.data,
+      flash: null,
     };
+  },
+
+  flash: function(msg) {
+    this.setState({flash: msg});
+  },
+
+  renderFlash: function() {
+    if (!this.state.flash)
+      return null;
+
+    var msg = this.state.flash;
+
+    // Show flash only once.
+    this.state.flash = null;
+
+    return <Flash message={msg} />;
   },
 
   handleUpdate: function(vehicle) {
@@ -23,6 +40,7 @@ var Vehicles = React.createClass({
   render: function() {
     return (
       <div>
+        {this.renderFlash()}
         <h2>Household info: vehicles</h2>
         <table className="table table-bordered">
           <thead>
@@ -41,12 +59,15 @@ var Vehicles = React.createClass({
                                key={k}
                                people={this.props.people}
                                handleUpdate={this.handleUpdate}
-                               handleDelete={this.handleDelete} />
+                               handleDelete={this.handleDelete}
+                               flash={this.flash} />
+
             })}
             <Vehicle vehicle={{}}
                      key={this.state.values.length}
                      people={this.props.people}
-                     handleUpdate={this.handleUpdate} />
+                     handleUpdate={this.handleUpdate}
+                     flash={this.flash} />
           </tbody>
         </table>
         <NavigationButtons disableBack={false}
