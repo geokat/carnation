@@ -69,17 +69,17 @@ var People = React.createClass({
                               handleUpdate={this.handleUpdate}
                               handleDelete={this.handleDelete}
                               flash={this.flash} />
-            })}
-            <Person person={{}}
-                    key={this.state.values.length}
-                    handleUpdate={this.handleUpdate}
-                    flash={this.flash} />
+             })}
+            {!this.props.summary && <Person person={{}}
+                                           key={this.state.values.length}
+                                           handleUpdate={this.handleUpdate}
+                                           flash={this.flash} />}
           </tbody>
         </table>
-        <NavigationButtons disableBack={false}
-                           disableNext={false}
-                           handleBack={this.props.prevStep}
-                           handleNext={this.props.nextStep} />
+        {!this.props.summary && <NavigationButtons disableBack={false}
+                                                  disableNext={false}
+                                                  handleBack={this.props.prevStep}
+                                                  handleNext={this.props.nextStep} />}
       </div>
     );
   },

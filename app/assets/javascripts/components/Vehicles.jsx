@@ -63,17 +63,17 @@ var Vehicles = React.createClass({
                                flash={this.flash} />
 
             })}
-            <Vehicle vehicle={{}}
-                     key={this.state.values.length}
-                     people={this.props.people}
-                     handleUpdate={this.handleUpdate}
-                     flash={this.flash} />
+            {!this.props.summary && <Vehicle vehicle={{}}
+                                             key={this.state.values.length}
+                                             people={this.props.people}
+                                             handleUpdate={this.handleUpdate}
+                                             flash={this.flash} />}
           </tbody>
         </table>
-        <NavigationButtons disableBack={false}
-                           disableNext={false}
-                           handleBack={this.props.prevStep}
-                           handleNext={this.props.nextStep} />
+        {!this.props.summary && <NavigationButtons disableBack={false}
+                                                   disableNext={false}
+                                                   handleBack={this.props.prevStep}
+                                                   handleNext={this.props.nextStep} />}
       </div>
     );
   },

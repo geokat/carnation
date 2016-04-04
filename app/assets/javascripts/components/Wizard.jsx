@@ -1,10 +1,11 @@
 var _data = {
+  // FIXME!!!
   household: {
-    address: null,
-    zip:     null,
-    city:    null,
-    state:   null,
-    nob:     null,
+    address: '123 Pine St',
+    zip:     '91423',
+    city:    'Oakville',
+    state:   'IL',
+    nob:     3,
   },
   // FIXME!!!
   people:   [
@@ -26,13 +27,28 @@ var _data = {
   vehicles: []
 };
 
+// FIXME!!!
+_data.vehicles = [
+  {
+    make:  'Buick',
+    model: 'Skylark',
+    year:  1964,
+    license: 'AJ124',
+    person: _data.people[1]
+  },
+];
+
 var Wizard = React.createClass({
 
   getInitialState: function() {
     return {
-      step: 3,
+      step: 1,
     };
   },
+
+  submitData: function() {
+  },
+
 
   nextStep: function() {
     this.setState({
@@ -61,6 +77,11 @@ var Wizard = React.createClass({
                          people={_data.people}
                          nextStep={this.nextStep}
                          prevStep={this.prevStep} />;
+
+      case 4:
+        return <Summary data={_data}
+                        prevStep={this.prevStep}
+                        nextStep={this.submitData} />;
     };
   },
 

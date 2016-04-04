@@ -175,10 +175,10 @@ var Household = React.createClass({
             {this.state.edit ? this.householdForm() : this.householdRow()}
           </tbody>
         </table>
-        <NavigationButtons disableBack={true}
-                           disableNext={this.state.edit}
-                           handleBack={() => {}}
-                           handleNext={this.handleNext} />
+        {!this.props.summary && <NavigationButtons disableBack={true}
+                                                   disableNext={this.state.edit}
+                                                   handleBack={() => {}}
+                                                   handleNext={this.handleNext} />}
       </div>
     );
   },
