@@ -32,8 +32,8 @@ var Vehicles = React.createClass({
 
   handleDelete: function(vehicle) {
     var vehicles = this.state.values;
-    var index = people.indexOf(vehicle);
-    people.splice(index, 1);
+    var index = vehicles.indexOf(vehicle);
+    vehicles.splice(index, 1);
     this.setState({values: vehicles});
   },
 
