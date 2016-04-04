@@ -31,6 +31,15 @@ var People = React.createClass({
   },
 
   handleDelete: function(person) {
+    // Make sure the person is not a vehicle owner.
+    for (var vehicle in this.props.vehicles) {
+      if (person === this.props.vehicles[vehicle].person) {
+        this.flash("This person is listed as a vehicle owner");
+        return;
+      }
+    }
+
+    // Delete the person.
     var people = this.state.values;
     var index = people.indexOf(person);
     people.splice(index, 1);

@@ -53,6 +53,7 @@ var Wizard = React.createClass({
                           nextStep={this.nextStep} />;
       case 2:
         return <People data={_data.people}
+                       vehicles={_data.vehicles}
                        nextStep={this.nextStep}
                        prevStep={this.prevStep} />;
       case 3:
