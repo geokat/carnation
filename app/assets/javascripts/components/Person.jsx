@@ -4,6 +4,7 @@ var Person = React.createClass({
     return {
       values: this.props.person,
       edit:   this.isBlank(),
+      ddVal:  null,
       errors: {
         first:  'has-none',
         last:   'has-none',
@@ -66,7 +67,7 @@ var Person = React.createClass({
         <td>{this.state.values.last}</td>
         <td>{this.state.values.email}</td>
         <td>{this.state.values.age}</td>
-        <td>{this.state.values.gender}</td>
+        <td>{this.genderLabel()}</td>
         <td>
           <a className="btn btn-default" onClick={() => this.setState({edit: true})}>
             Edit
@@ -79,9 +80,26 @@ var Person = React.createClass({
     );
   },
 
+  genderLabel: function() {
+    var isMale = this.state.ddVal;
+
+    if (isMale !== null) {
+      return isMale ? 'Male' : 'Female';
+    }
+
+    return 'Select';
+  },
+
+  handleGenderSelect: function(e, isMale) {
+    e.preventDefault();
+    this.state.ddVal = isMale;
+    this.forceUpdate();
+  },
+
   personForm: function() {
     var cancelStyle = this.isBlank()?
                       {visibility: 'hidden'} : {visibility: 'visible'};
+    var ddClass = 'dropdown' + this.state.errors.gender;
     return (
       <tr>
         <td className={this.state.errors.first}>
@@ -104,15 +122,35 @@ var Person = React.createClass({
         </td>
         <td className={this.state.errors.age}>
           <input className="form-control"
-                 type="text"
+                 type="number"
                  defaultValue={this.state.values.age}
                  ref="age" />
         </td>
-        <td className={this.state.errors.gender}>
-          <input className="form-control"
-                 type="text"
-                 defaultValue={this.state.values.gender}
-                 ref="gender" />
+        <td>
+          <div className={ddClass}>
+            <button className="btn btn-default dropdown-toggle form-control"
+                    type="button"
+                    id="genderDropdown"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="true">
+              {this.genderLabel()}
+              <span> </span>
+              <span className="caret"></span>
+            </button>
+            <ul className="dropdown-menu" aria-labelledby="genderDropdown">
+              <li>
+                <a href="#" onClick={(e) => this.handleGenderSelect(e, true)}>
+                  Male
+                </a>
+              </li>
+              <li>
+                <a href="#" onClick={(e) => this.handleGenderSelect(e, false)}>
+                  Female
+                </a>
+              </li>
+            </ul>
+          </div>
         </td>
         <td>
           <a className="btn btn-default" onClick={this.handleSave}>
