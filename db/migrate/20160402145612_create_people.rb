@@ -6,7 +6,7 @@ class CreatePeople < ActiveRecord::Migration
       t.string :last
       t.string :email
       t.integer :age
-      t.integer :gender
+      t.boolean :is_male
 
       t.timestamps null: false
     end

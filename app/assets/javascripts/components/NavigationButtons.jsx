@@ -1,5 +1,9 @@
 var NavigationButtons = React.createClass({
 
+  handleNext: function(e) {
+    this.props.handleNext(e, this.props.flash);
+  },
+
   render: function() {
     return (
       <div className="text-center">
@@ -9,7 +13,7 @@ var NavigationButtons = React.createClass({
              onClick={this.props.handleBack}>Back</a>
           <a className="btn btn-default"
              disabled={this.props.disableNext}
-             onClick={this.props.handleNext}>Next</a>
+             onClick={this.handleNext}>Next</a>
         </div>
       </div>
     );

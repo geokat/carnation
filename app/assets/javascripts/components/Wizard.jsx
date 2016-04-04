@@ -1,42 +1,14 @@
 var _data = {
-  // FIXME!!!
   household: {
-    address: '123 Pine St',
-    zip:     '91423',
-    city:    'Oakville',
-    state:   'IL',
-    nob:     3,
+    address: null,
+    zip:     null,
+    city:    null,
+    state:   null,
+    nob:     null
   },
-  // FIXME!!!
-  people:   [
-    {
-      first:  'Andrew',
-      last:   'Mason',
-      email:  'andrew@asdf.com',
-      age:    '23',
-      gender: true,
-    },
-    {
-      first:  'Jane',
-      last:   'Doe',
-      email:  'jane@asdf.com',
-      age:    '18',
-      gender: false,
-    },
-  ],
+  people: [],
   vehicles: []
 };
-
-// FIXME!!!
-_data.vehicles = [
-  {
-    make:  'Buick',
-    model: 'Skylark',
-    year:  1964,
-    license: 'AJ124',
-    person: _data.people[1]
-  },
-];
 
 var Wizard = React.createClass({
 
@@ -46,9 +18,45 @@ var Wizard = React.createClass({
     };
   },
 
-  submitData: function() {
-  },
+  submitData: function(e, flash) {
+    e.preventDefault();
 
+    // Perform deep copy of _data in case we fail submission
+    // and the user revisits the steps.
+    var data = $.extend(true, {}, _data);
+
+    // Massage data for submission to rails.
+    for (var p in data.people) {
+      // Rename gender to is_male.
+      data.people[p].is_male = data.people[p].gender;
+      delete data.people[p].gender;
+
+      data.people[p].vehicles_attributes = [];
+    }
+    for (var v in data.vehicles) {
+      var person = $.grep(data.people, (p) => {
+        return p.email === data.vehicles[v].person.email
+      })[0];
+      delete data.vehicles[v].person;
+      person.vehicles_attributes.push(data.vehicles[v]);
+    }
+    delete data.vehicles;
+    data.household.people_attributes = data.people;
+    delete data.people;
+
+    $.ajax({
+      method: 'POST',
+      url: '/households/',
+      dataType: 'JSON',
+      data: data,
+      success: () => {
+        this.setState({step: this.state.step + 1});
+      },
+      error: (jqXHR, msg) => {
+        flash('Could not submit data: ' + msg);
+      }
+    });
+  },
 
   nextStep: function() {
     this.setState({
@@ -82,6 +90,9 @@ var Wizard = React.createClass({
         return <Summary data={_data}
                         prevStep={this.prevStep}
                         nextStep={this.submitData} />;
+
+      case 5:
+        return <h1>Thank you!</h1>;
     };
   },
 

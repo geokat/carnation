@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 20160402145623) do
     t.string   "last"
     t.string   "email"
     t.integer  "age"
-    t.integer  "gender"
+    t.boolean  "is_male"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
